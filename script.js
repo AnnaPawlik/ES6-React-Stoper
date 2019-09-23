@@ -12,11 +12,6 @@ class Stopwatch extends React.Component {
             },
             results: []
         }
-        // this.running = false;
-        // this.display = display;
-        // this.list = addlist;
-        // this.reset();
-        // this.print(this.times);
     }
 
     reset() {
@@ -24,23 +19,18 @@ class Stopwatch extends React.Component {
             times: {
             minutes: 0,
             seconds: 0,
-            miliseconds: 0
+            miliseconds: 0,
+            results: []
             }
         });
-        // this.print();
-        this.list.innerHTML = "";
     }
-
-    // print() {
-    //     this.display.innerText = this.format(this.times);
-    // }
 
     format(times) {
         return `${pad0(times.minutes)}:${pad0(times.seconds)}:${pad0(Math.floor(times.miliseconds))}`;
     }
 
     start() {
-        if (!this.running) {
+        if (!this.state.running) {
             this.setState({
                 running: true
             });
@@ -49,21 +39,23 @@ class Stopwatch extends React.Component {
     }
 
     step() {
-        if (!this.running) return;
+        if (!this.state.running) return;
         this.calculate();
-        this.print();
     }
 
     calculate() {
-        this.times.miliseconds += 1;
-        if (this.times.miliseconds >= 100) {
-            this.times.seconds += 1;
-            this.times.miliseconds = 0;
+        this.state.times.miliseconds += 1;
+        if (this.state.times.miliseconds >= 100) {
+            this.state.times.seconds += 1;
+            this.state.times.miliseconds = 0;
         }
-        if (this.times.seconds >= 60) {
-            this.times.minutes += 1;
-            this.times.seconds = 0;
+        if (this.state.times.seconds >= 60) {
+            this.state.times.minutes += 1;
+            this.state.times.seconds = 0;
         }
+        this.setState({
+            times: this.state.times
+        });
     }
 
     stop() {
@@ -74,14 +66,9 @@ class Stopwatch extends React.Component {
     }
 
     addlist() {
-		this.list.appendChild(this.createListElement(this.format(this.times)));
+		this.state.results.push(this.format());
+        this.setState({});
 	}
-
-	createListElement(time) {
-		let listElement = document.createElement('li');
-		listElement.innerHTML = time;
-        return listElement;
-    }
     
     render() {
         return ( 
@@ -105,23 +92,8 @@ class Stopwatch extends React.Component {
     }
 }
 
-// const stopwatch = new Stopwatch(document.querySelector('.stopwatch'), document.querySelector('.results'));
-
-
-// let startButton = document.getElementById('start');
-// startButton.addEventListener('click', () => stopwatch.start());
-
-// let stopButton = document.getElementById('stop');
-// stopButton.addEventListener('click', () => stopwatch.stop());
-
-// let resetButton = document.getElementById('reset');
-// resetButton.addEventListener('click', () => stopwatch.reset());
-
-// let addButton = document.getElementById('addList');
-// addButton.addEventListener('click', () => stopwatch.addlist());
-
 const element = React.createElement(Stopwatch);
-ReactDOM.render(element, document.getElementsById('app'));
+ReactDOM.render(element, document.getElementById('app'));
 
 function pad0(value) {
     let result = value.toString();

@@ -2,6 +2,8 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -35,9 +37,9 @@ var Stopwatch = function (_React$Component) {
                 times: {
                     minutes: 0,
                     seconds: 0,
-                    miliseconds: 0,
-                    results: []
-                }
+                    miliseconds: 0
+                },
+                results: []
             });
         }
     }, {
@@ -90,10 +92,13 @@ var Stopwatch = function (_React$Component) {
             clearInterval(this.watch);
         }
     }, {
-        key: 'addlist',
-        value: function addlist() {
-            this.state.results.push(this.format());
-            this.setState({});
+        key: 'addList',
+        value: function addList() {
+            this.setState({ results: [].concat(_toConsumableArray(this.state.results), [React.createElement(
+                    'li',
+                    null,
+                    this.format(this.state.times)
+                )]) });
         }
     }, {
         key: 'render',
@@ -146,7 +151,13 @@ var Stopwatch = function (_React$Component) {
                     React.createElement(
                         'ul',
                         { className: 'results' },
-                        this.state.results
+                        this.state.results.map(function (result, index) {
+                            return React.createElement(
+                                'li',
+                                { key: index },
+                                result
+                            );
+                        })
                     )
                 )
             );

@@ -20,8 +20,8 @@ class Stopwatch extends React.Component {
             minutes: 0,
             seconds: 0,
             miliseconds: 0,
+            },
             results: []
-            }
         });
     }
 
@@ -65,9 +65,8 @@ class Stopwatch extends React.Component {
         clearInterval(this.watch);
     }
 
-    addlist() {
-		this.state.results.push(this.format());
-        this.setState({});
+    addList() {
+		this.setState({ results: [...this.state.results, <li>{this.format(this.state.times)}</li>] });
 	}
     
     render() {
@@ -84,7 +83,7 @@ class Stopwatch extends React.Component {
                 <div className={'list'}>
                     <button onClick={() => this.addList()}>Add to list</button>
                     <ul className={'results'}>
-                        {this.state.results}
+                        {this.state.results.map((result, index) => <li key={index}>{result}</li>)}
                     </ul>
                 </div>
             </div>
